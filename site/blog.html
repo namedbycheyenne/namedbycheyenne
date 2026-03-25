@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Blog — Cheyenne The Name Alchemist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: light only; }
+  :root {
+    --ink: #3a2a2e; --cream: #fdf8f6; --rose: #c4566a; --rose-light: #d4798a;
+    --rose-deep: #a84254; --blush: #f0dde0; --blush-light: #f7eced;
+    --mauve: #9c7d84; --warm-white: #fefbfa; --charcoal: #4a3a3e; --petal: #e8b4bc;
+  }
+  @media (prefers-color-scheme: dark) {
+    html, body { background-color: #fdf8f6 !important; color: #3a2a2e !important; }
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; background-color:#fdf8f6; }
+  body { font-family:'DM Sans',sans-serif; background-color:#fdf8f6 !important; color:#3a2a2e !important; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1.5rem 4rem; background:rgba(253,248,246,0.88); backdrop-filter:blur(20px); border-bottom:1px solid rgba(196,86,106,0.08); }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--ink); text-decoration:none; }
+  .nav-logo span { color:var(--rose); }
+  .nav-links { display:flex; gap:2rem; align-items:center; }
+  .nav-links a { font-size:0.8rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; text-decoration:none; color:var(--charcoal); transition:color 0.3s; }
+  .nav-links a:hover { color:var(--rose); }
+  .nav-cta { background:var(--rose) !important; color:var(--cream) !important; padding:0.65rem 1.6rem !important; border-radius:100px; }
+
+  .blog-header { padding:10rem 4rem 4rem; text-align:center; background:var(--warm-white); border-bottom:1px solid rgba(196,86,106,0.08); }
+  .blog-header .label { font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--rose); margin-bottom:1rem; }
+  .blog-header h1 { font-family:'Playfair Display',serif; font-size:clamp(2.2rem,4vw,3.2rem); font-weight:400; line-height:1.15; margin-bottom:1rem; }
+  .blog-header p { font-size:1.05rem; font-weight:300; line-height:1.7; color:var(--charcoal); max-width:30rem; margin:0 auto; }
+
+  .blog-grid { max-width:64rem; margin:0 auto; padding:4rem; display:grid; grid-template-columns:repeat(2,1fr); gap:2.5rem; }
+  .blog-card { background:var(--warm-white); border:1px solid rgba(196,86,106,0.08); border-radius:16px; overflow:hidden; transition:all 0.35s ease; cursor:pointer; }
+  .blog-card:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(196,86,106,0.08); }
+  .blog-card-img { height:200px; display:flex; align-items:center; justify-content:center; font-size:4rem; }
+  .blog-card-img.bg-1 { background:linear-gradient(135deg,var(--blush-light),var(--blush)); }
+  .blog-card-img.bg-2 { background:linear-gradient(135deg,var(--petal),var(--blush-light)); }
+  .blog-card-img.bg-3 { background:linear-gradient(135deg,var(--blush),var(--cream)); }
+  .blog-card-img.bg-4 { background:linear-gradient(135deg,var(--rose-light),var(--petal)); color:var(--cream); }
+  .blog-card-body { padding:2rem; }
+  .blog-tag { font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--rose); margin-bottom:0.8rem; display:block; }
+  .blog-date { font-size:0.75rem; font-weight:300; color:var(--mauve); margin-bottom:0.5rem; display:block; }
+  .blog-card-body h2 { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:400; line-height:1.3; margin-bottom:0.8rem; }
+  .blog-card-body p { font-size:0.88rem; font-weight:300; line-height:1.65; color:var(--charcoal); margin-bottom:1.5rem; }
+  .read-more { font-size:0.82rem; font-weight:500; color:var(--rose); }
+
+  .article-section { display:none; max-width:42rem; margin:0 auto; padding:10rem 2rem 5rem; }
+  .article-section.active { display:block; }
+  .article-back { font-size:0.85rem; font-weight:500; color:var(--rose); text-decoration:none; margin-bottom:2rem; display:inline-block; }
+  .article-section h1 { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:400; line-height:1.2; margin-bottom:0.8rem; }
+  .article-section .blog-date { margin-bottom:2rem; }
+  .article-body p { font-size:1rem; font-weight:300; line-height:1.85; color:var(--charcoal); margin-bottom:1.5rem; }
+  .article-body h2 { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:400; margin:2.5rem 0 1rem; color:var(--ink); }
+  .article-body h3 { font-size:1.1rem; font-weight:600; margin:2rem 0 0.8rem; color:var(--ink); }
+  .article-cta { margin-top:3rem; padding:2.5rem; background:var(--blush-light); border-radius:16px; text-align:center; }
+  .article-cta p { font-size:1rem !important; margin-bottom:1.2rem !important; color:var(--ink) !important; }
+  .btn-primary { background:var(--rose); color:var(--cream); padding:0.9rem 2rem; border:none; border-radius:100px; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:500; cursor:pointer; transition:all 0.35s ease; text-decoration:none; display:inline-block; }
+
+  footer { background:var(--ink); color:var(--mauve); padding:4rem; display:flex; justify-content:space-between; align-items:center; }
+  .footer-logo { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--cream); }
+  .footer-logo span { color:var(--rose-light); }
+  footer p { font-size:0.78rem; font-weight:300; }
+  .footer-links { display:flex; gap:2rem; }
+  .footer-links a { font-size:0.78rem; color:var(--mauve); text-decoration:none; }
+
+  .reveal { opacity:0; transform:translateY(30px); transition:all 0.7s cubic-bezier(0.22,1,0.36,1); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  @media (max-width:768px) {
+    nav { padding:1.2rem 2rem; }
+    .nav-links a:not(.nav-cta) { display:none; }
+    .blog-header { padding:8rem 2rem 3rem; }
+    .blog-grid { grid-template-columns:1fr; padding:2rem; }
+    .article-section { padding:8rem 1.5rem 4rem; }
+    footer { flex-direction:column; gap:1.5rem; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Cheyenne<span>.</span></a>
+  <div class="nav-links">
+    <a href="index.html#about">About Me</a>
+    <a href="index.html#whyus">Why Us</a>
+    <a href="index.html#work">Work</a>
+    <a href="index.html#testimonials">Testimonials</a>
+    <a href="index.html#process">Process</a>
+    <a href="index.html#services">Pricing</a>
+    <a href="index.html#faq">FAQ</a>
+    <a href="blog.html">Blog</a>
+    <a href="index.html#contact" class="nav-cta">Get in Touch</a>
+  </div>
+</nav>
+
+<div class="blog-header" id="blog-top">
+  <p class="label">✿ Blog</p>
+  <h1>Naming Insights</h1>
+  <p>Tips, trends, and stories to help you find the perfect name.</p>
+</div>
+
+<div class="blog-grid" id="blog-grid">
+
+  <div class="blog-card reveal" onclick="showArticle('article-3')">
+    <div class="blog-card-img bg-3">📖</div>
+    <div class="blog-card-body">
+      <span class="blog-tag">Name Stories</span>
+      <span class="blog-date">March 24, 2026</span>
+      <h2>The Power of a Name: How It Shapes Your Life</h2>
+      <p>Your name carries hidden energy from the five elements. Learn how ancient systems reveal why your name matters far more than you think.</p>
+      <span class="read-more">Read More →</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<!-- ARTICLE 3 -->
+<div class="article-section" id="article-3">
+  <a href="#" class="article-back" onclick="hideArticle(); return false;">← Back to Blog</a>
+  <span class="blog-tag">Name Stories</span>
+  <h1>The Power of a Name: How It Shapes Your Life</h1>
+  <span class="blog-date">March 24, 2026</span>
+  <div class="article-body">
+    <p>Have you ever considered how your name shapes your life? Most people think of a name as a simple label, something chosen because it sounds pleasant. But across thousands of years and countless civilisations, names have been understood as something far more powerful: vessels of energy that influence your career, relationships, wealth, and overall wellbeing.</p>
+
+    <h2>Your Name Is Energy</h2>
+    <p>Think about how many times your name is spoken every single day. Your partner says it in the morning. Your colleagues use it at work. Your friends call you by it. Your children whisper it at bedtime. Every single repetition generates energy around you.</p>
+    <p>But is that energy working for you or against you? Most people have never stopped to ask this question. And yet, the answer can make all the difference.</p>
+
+    <h2>Ancient Systems: The Five Elements</h2>
+    <p>For thousands of years, Chinese civilisation has recognised that the universe operates through five fundamental elements: Wood, Fire, Earth, Metal, and Water. These are not just physical materials. They represent forces of energy that govern everything in nature, including human life.</p>
+    <p>Each element carries distinct qualities. Wood represents growth, creativity, and new beginnings. Fire embodies passion, leadership, and visibility. Earth signifies stability, nurturing, and grounding. Metal is associated with precision, discipline, and clarity. Water symbolises wisdom, adaptability, and flow.</p>
+    <p>Every person is born with a unique elemental balance based on their birth year, month, and time. Some people have an abundance of Fire energy but lack Water. Others may be strong in Earth but weak in Wood. These imbalances affect personality, health, career prospects, and relationships.</p>
+    <p>Here is where naming becomes crucial: the right name can strengthen a weak element, creating greater harmony and balance in a person's life. A name chosen without understanding these elemental forces may sound beautiful but carry energy that conflicts with the person's natural balance, creating invisible friction that accumulates over years.</p>
+
+    <h2>The Hidden Five Elements in Every Name</h2>
+    <p>What most people do not realise is that every name contains hidden five element energy within it. Each letter, each syllable, each sound carries an elemental signature that is invisible to the untrained eye but profoundly influential in your daily life.</p>
+    <p>When your name is spoken, these hidden elements interact with your personal birth energy. If they complement each other, harmony is created. If they clash, tension builds quietly beneath the surface, affecting your career, relationships, and wellbeing in ways you may never connect back to your name.</p>
+    <p>Uncovering the five element composition hidden within a name requires deep expertise and years of dedicated study. It is not something that can be determined by simply looking at a name or checking a website. The interaction between the elements within your name and the elements within your birth energy is layered and complex, which is why professional analysis is essential to get it right.</p>
+    <p>Choosing a name without understanding its hidden elemental energy is like choosing medicine based on the colour of the pill. It might look right, but without proper analysis, you have no way of knowing whether it is truly working for you.</p>
+
+    <h2>The 60/40 Principle</h2>
+    <p>Your life path is largely influenced by your birth astrology, the energy you were born with. This accounts for roughly 60 percent of your life direction, and it cannot be changed.</p>
+    <p>But the remaining 40 percent? That comes down to your own hard work, your choices, and the energy your name carries. A well-chosen name, one that aligns with your personal energy through the five elements, can become a powerful ally in your journey. It supports your career, strengthens your relationships, and attracts wealth. Combined with your own effort and determination, the right name energy can turn that 40 percent into the difference between a life of struggle and a life of flow.</p>
+
+    <h2>Names and First Impressions</h2>
+    <p>Modern science supports what ancient wisdom has always known. Studies in psychology show that names affect how others perceive us within milliseconds. Names that are clear and harmonious create positive first impressions. Names that carry the right energy open doors in both social and professional settings.</p>
+
+    <h2>Names and Career Development</h2>
+    <p>Research from leading universities has shown that job applicants with certain names receive significantly more interview callbacks than others with identical qualifications. Your name, before you even enter the room, is already shaping how people perceive your potential. When your name energy aligns with your career ambitions, opportunities flow more naturally.</p>
+
+    <h2>A Real Story</h2>
+    <p>One of my clients had been struggling with her career for over a decade. She was talented, hardworking, and well-educated, but every opportunity seemed to dissolve just before it materialised. When I analysed her name using the five elements and numerology, I discovered a significant energy imbalance. Her name was working against her natural strengths.</p>
+    <p>After finding a name that aligned with her true energy, things began to shift. Within six months, she received the promotion she had been chasing for years. Was the name change the sole cause? No. She was still the same talented person. But when you remove unnecessary friction from someone's path, the results can be remarkable.</p>
+
+    <h2>Why You Need a Professional</h2>
+    <p>Understanding the five elements and numerology at a surface level is one thing. Knowing how to combine these systems, analyse their interactions with your birth data, and select a name that creates genuine harmony is something entirely different. It requires years of dedicated study, thousands of hours of practice, and a proprietary method developed through analysing countless names.</p>
+    <p>The power of a name is real. Whether choosing a name for a newborn, renaming yourself as an adult, or naming a business, it deserves more than a quick decision based on how it sounds. It deserves expert analysis rooted in ancient wisdom.</p>
+    <div class="article-cta">
+      <p>✿ Ready to discover the energy behind your name?</p>
+      <a href="index.html#services" class="btn-primary">Start Your Naming Journey</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Cheyenne<span>.</span></div>
+  <p>&copy; 2026 Cheyenne — The Name Alchemist. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="https://www.instagram.com/cheyennenamealchemist/" target="_blank">Instagram</a>
+    <a href="https://www.tiktok.com/@namedbycheyenne" target="_blank">TikTok</a>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  function showArticle(id) {
+    document.getElementById('blog-grid').style.display = 'none';
+    document.querySelector('.blog-header').style.display = 'none';
+    document.querySelectorAll('.article-section').forEach(a => a.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  function hideArticle() {
+    document.querySelectorAll('.article-section').forEach(a => a.classList.remove('active'));
+    document.getElementById('blog-grid').style.display = 'grid';
+    document.querySelector('.blog-header').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>
